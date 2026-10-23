@@ -1,35 +1,77 @@
-good_1={'name':'面包','price':14,'number':3}
-good_2={'name':'蛋糕','price':50,'number':2}
-good_3={'name':'牛奶','price':20,'number':1}
-good_null={'name':'三明治','price':15,'number':-1}
-good_4={'name':'咖啡','price':20,'number':0}
-goods_list=[good_1,good_2,good_3,good_4]
-goods_list_error=[good_null]
-goods_list_null=[]
+from datetime import datetime, date, time, timedelta
+##测试数据
+product_1={'product_id':1001,
+        'name':'Vt1',
+        'price':150,
+        'number':3
+}
+product_2={'product_id':1002,
+        'name':'Vt2',
+        'price':160,
+        'number':2
+}
+product_3={'product_id':1003,
+        'name':'Vt3',
+        'price':170,
+        'number':1
+}
+product_null={'product_id':1004,
+           'name':'Vt4',
+           'price':180,
+           'number':-1
+}
+product_4={'product_id':1005,
+        'name':'vt5',
+        'price':190,
+        'number':0
+}
+
+customer={
+    "customer_id":2001,
+    "name":"XX公司",
+    "level":"普通客户"
+}
+
+order_1={
+       'order_id':3001,
+       'customer_id':2001,
+       'product_id':1001,
+       'order_date':datetime(2026, 11, 15, 10, 30, 0),
+       'order_num':1,
+       'price':150,
+       'order_sum':750,
+       'order_status':'未出库'
+}
 
 
-def sum_goods_value(product):
-  if not product:
-    return "没有商品！"
-  total = 0 
-  for x in product:
-    if(x['number']<0):
-      return '错误！'+x['name']+'数量为负数！'
-    total+=(x['number']*x['price'])
-  return "商品总价："+str(total)
 
-def cal_goods_value(product):
-  if not product:
-      return "没有商品！"
-  total = 0
-  for x in product:
-    if(x['number']<0):
-          return '错误！'+x['name']+'数量为负数！'
-    total+=x['price']
-  return "商品单价和:"+str(total)
+products_list=[product_1,product_2,product_3,product_4]
 
-print("正确结果:"+sum_goods_value(goods_list)+'  '+cal_goods_value(goods_list))
-print("错误结果:"+sum_goods_value(goods_list_error)+'   '+cal_goods_value(goods_list_error))
-print("空结果:"+sum_goods_value(goods_list_null)+'   '+cal_goods_value(goods_list_null))
 
+
+
+
+##计算订单总价
+def sum_order_value(order,product_list):
+  if not order:
+    return "空订单！"
+  if not product_list:
+    return "没有商品信息！"
+  product_id = order['product_id']
+ 
+  if not any(d.get("product_id") == product_id for d in product_list):
+    return "没有该商品！"
+  
+  num=order['order_num']
+  price=order['price']
+  if num<1:
+    return "商品数量不得小于等于0"
+  if price<0:
+      return "商品单价不得为负数"
+   
+  return "该订单总价为:"+str(num*price)  
+  
+    
+##输出结果
+print(sum_order_value(order_1,products_list))
   
