@@ -15,12 +15,12 @@ product_3={'product_id':1003,
         'price':170,
         'number':1
 }
-product_null={'product_id':1004,
+product_4={'product_id':1004,
            'name':'Vt4',
            'price':180,
-           'number':-1
+           'number':0
 }
-product_4={'product_id':1005,
+product_5={'product_id':1005,
         'name':'vt5',
         'price':190,
         'number':0
@@ -37,7 +37,7 @@ order_1={
        'customer_id':2001,
        'product_id':1001,
        'order_date':datetime(2026, 11, 15, 10, 30, 0),
-       'order_num':1,
+       'order_num':4,
        'price':150,
        'order_sum':750,
        'order_status':'未出库'
@@ -45,7 +45,7 @@ order_1={
 
 
 
-products_list=[product_1,product_2,product_3,product_4]
+products_list=[product_1,product_2,product_3,product_4,product_5]
 
 
 
@@ -62,16 +62,31 @@ def sum_order_value(order,product_list):
   if not any(d.get("product_id") == product_id for d in product_list):
     return "没有该商品！"
   
+  if not stock_check(order,product_list):
+    return "该商品库存不足！"
+  
   num=order['order_num']
   price=order['price']
   if num<1:
-    return "商品数量不得小于等于0"
+    return "订单商品数量不得小于等于0"
   if price<0:
       return "商品单价不得为负数"
    
   return "该订单总价为:"+str(num*price)  
   
+#库存检查
+def stock_check(order,product_list):
+  order_num= order.get('order_num')
+  product_id = order.get('product_id')
+  for d in product_list:
+    if(d.get("product_id")==product_id):
+      return d.get("number")>=order_num
+  
+                              
+  
     
 ##输出结果
 print(sum_order_value(order_1,products_list))
+
+
   
