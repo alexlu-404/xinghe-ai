@@ -48,13 +48,21 @@ order_1={
 products_list=[product_1,product_2,product_3,product_4,product_5]
 
 
-
+#库存检查
+def stock_check(order,product_list):
+  order_num= order.get('order_num')
+  product_id = order.get('product_id')
+  for d in product_list:
+    if(d.get("product_id")==product_id):
+      return d.get("number")>=order_num
+  
 
 
 ##计算订单总价
-def sum_order_value(order,product_list):
+def order_process(order,product_list):
+  ##基础检测
   if not order:
-    return "空订单！"
+    return "请输入订单！"
   if not product_list:
     return "没有商品信息！"
   product_id = order['product_id']
@@ -65,6 +73,8 @@ def sum_order_value(order,product_list):
   if not stock_check(order,product_list):
     return "该商品库存不足！"
   
+  
+  ##订单校验
   num=order['order_num']
   price=order['price']
   if num<1:
@@ -74,19 +84,13 @@ def sum_order_value(order,product_list):
    
   return "该订单总价为:"+str(num*price)  
   
-#库存检查
-def stock_check(order,product_list):
-  order_num= order.get('order_num')
-  product_id = order.get('product_id')
-  for d in product_list:
-    if(d.get("product_id")==product_id):
-      return d.get("number")>=order_num
-  
+
+
                               
   
     
 ##输出结果
-print(sum_order_value(order_1,products_list))
+print(order_process(order_1,products_list))
 
 
   
