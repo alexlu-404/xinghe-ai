@@ -1,4 +1,5 @@
-from datetime import datetime, date, time, timedelta
+from db import get_connection
+from datetime import datetime
 ##测试数据
 product_1={'product_id':1001,
         'name':'Vt1',
@@ -84,13 +85,32 @@ def order_process(order,product_list):
    
   return "该订单总价为:"+str(num*price)  
   
+##数据库操作相关
+def order_query():
+  conn = get_connection()
+  cur = conn.cursor()
+  cur.execute("select * from products")
+  print(cur.fetchall())
+  cur.close()
+  conn.close()   
 
+def order_query_bycode(code):
+  conn = get_connection()
+  cur = conn.cursor()
+  cur.execute("select * from products where product_code=%s",
+                (code,)
+                )
+  print(cur.fetchall())
+  cur.close()
+  conn.close()  
+   
 
                               
   
     
 ##输出结果
 print(order_process(order_1,products_list))
+order_query_bycode('P1001')
 
 
   
